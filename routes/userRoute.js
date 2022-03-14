@@ -7,6 +7,7 @@ const userRouter = express.Router();
 userRouter.post('/',
   auth.displayNameValidation,
   auth.emailValidation,
+  auth.checkIfUserAlreadyExists,
   auth.passwordValidation,
   controller.registerUser);
 

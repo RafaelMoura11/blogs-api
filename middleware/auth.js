@@ -15,25 +15,35 @@ const displayNameValidation = async (req, _res, next) => {
 const emailValidation = async (req, _res, next) => {
   const { email } = req.body;
 
-  if (!email) return next({ status: 400, message: '"email" is required' });
+  if (typeof (email) !== 'string') return next({ status: 400, message: '"email" is required' });
+
+  if (!email.length) return next({ status: 400, message: '"email" is not allowed to be empty' });
 
   if (!emailRegex.test(email)) {
     return next({ status: 400, message: '"email" must be a valid email' });
   }
+  
+  next();
+};
 
+const checkIfUserAlreadyExists = async (req, _res, next) => {
+  const { email } = req.body;
   const isUserAlreadyRegistered = await User.findOne({ where: { email } });
 
-  console.log(isUserAlreadyRegistered);
-
   if (isUserAlreadyRegistered) return next({ status: 409, message: 'User already registered' });
-  
   next();
 };
 
 const passwordValidation = async (req, _res, next) => {
   const { password } = req.body;
 
-  if (!password) return next({ status: 400, message: '"password" is required' });
+  if (typeof (password) !== 'string') {
+    return next({ status: 400, message: '"password" is required' });
+  }
+
+  if (!password.length) {
+    return next({ status: 400, message: '"password" is not allowed to be empty' });
+  }
 
   if (password.length !== 6) {
     return next({ status: 400, message: '"password" length must be 6 characters long' });
@@ -41,8 +51,17 @@ const passwordValidation = async (req, _res, next) => {
   next();
 };
 
+const checkLoginData = async (req, _res, next) => {
+  const { email, password } = req.body;
+  const userExists = await User.findOne({ where: { email, password } });
+  if (!userExists) return next({ status: 400, message: 'Invalid fields' });
+  return next();
+};
+
 module.exports = {
   displayNameValidation,
   emailValidation,
   passwordValidation,
+  checkIfUserAlreadyExists,
+  checkLoginData,
 };
