@@ -1,6 +1,8 @@
 // regex retirado do site: https://www.w3resource.com/javascript/form/email-validation.php#:~:text=To%20get%20a%20valid%20email,%5D%2B)*%24%2F.
 const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 const jwt = require('jsonwebtoken');
+const userService = require('../services/user');
+const postService = require('../services/posts');
 
 const segredo = 'meusecretdetoken';
 const { User, Category } = require('../models');
@@ -73,6 +75,17 @@ const validateJWT = async (req, _res, next) => {
   }
 };
 
+const checkIfUserHasAuth = async (req, _res, next) => {
+  const { id } = req.params;
+  const { data: { email } } = req.user;
+  const { dataValues: { id: userIdInTheRequest } } = await userService.findUserByEmail(email);
+  const [post] = await postService.getPostById(id);
+  if (post.dataValues.userId !== userIdInTheRequest) {
+    return next({ status: 401, message: 'Unauthorized user' });
+  }
+  next();
+};
+
 const nameValidation = async (req, _res, next) => {
   const { name } = req.body;
   if (!name) return next({ status: 400, message: '"name" is required' });
@@ -106,6 +119,13 @@ const checkIfCategoriesExist = async (req, _res, next) => {
       ? next({ status: 400, message: '"categoryIds" not found' }) : next()));
 };
 
+const checkIfCategoriesFieldIsEmpty = async (req, _res, next) => {
+  const { categoryIds } = req.body;
+
+  if (categoryIds) return next({ status: 400, message: 'Categories cannot be edited' });
+  return next();
+};
+
 module.exports = {
   displayNameValidation,
   emailValidation,
@@ -118,4 +138,6 @@ module.exports = {
   contentValidation,
   categoryIdsValidation,
   checkIfCategoriesExist,
+  checkIfUserHasAuth,
+  checkIfCategoriesFieldIsEmpty,
 };

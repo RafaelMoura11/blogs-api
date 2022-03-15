@@ -12,8 +12,16 @@ postsRouter.post('/',
   auth.checkIfCategoriesExist,
   controller.createPost);
 
-  postsRouter.get('/:id', auth.validateJWT, controller.getPostById);
+postsRouter.get('/:id', auth.validateJWT, controller.getPostById);
   
-  postsRouter.get('/', auth.validateJWT, controller.getAllPosts);
+postsRouter.get('/', auth.validateJWT, auth.checkIfUserHasAuth, controller.getAllPosts);
+
+postsRouter.put('/:id',
+  auth.validateJWT,
+  auth.checkIfUserHasAuth,
+  auth.checkIfCategoriesFieldIsEmpty,
+  auth.titleValidation,
+  auth.contentValidation,
+  controller.updatePost);
   
-  module.exports = postsRouter;
+module.exports = postsRouter;
