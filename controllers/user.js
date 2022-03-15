@@ -24,7 +24,16 @@ const getAll = async (_req, res) => {
   return res.status(200).json(allUsers);
 };
 
+const getById = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  const user = await User.findOne({ where: { id } });
+  if (!user) return next({ status: 404, message: 'User does not exist' });
+  return res.status(200).json(user);
+};
+
 module.exports = {
   registerUser,
   getAll,
+  getById,
 };

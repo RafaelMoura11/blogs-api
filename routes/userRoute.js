@@ -11,6 +11,7 @@ userRouter.post('/',
   auth.passwordValidation,
   controller.registerUser);
 
+  userRouter.get('/:id', auth.validateJWT, controller.getById);
 userRouter.get('/', auth.validateJWT, controller.getAll);
 
 module.exports = userRouter;
