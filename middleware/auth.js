@@ -72,6 +72,12 @@ const validateJWT = async (req, _res, next) => {
   }
 };
 
+const nameValidation = async (req, _res, next) => {
+  const { name } = req.body;
+  if (!name) return next({ status: 400, message: '"name" is required' });
+  return next();
+};
+
 module.exports = {
   displayNameValidation,
   emailValidation,
@@ -79,4 +85,5 @@ module.exports = {
   checkIfUserAlreadyExists,
   checkLoginData,
   validateJWT,
+  nameValidation,
 };
