@@ -3,7 +3,7 @@ const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 const jwt = require('jsonwebtoken');
 
 const segredo = 'meusecretdetoken';
-const { User } = require('../models');
+const { User, Category } = require('../models');
 
 const displayNameValidation = async (req, _res, next) => {
   const { displayName } = req.body;
@@ -78,6 +78,33 @@ const nameValidation = async (req, _res, next) => {
   return next();
 };
 
+const titleValidation = async (req, _res, next) => {
+  const { title } = req.body;
+  if (!title) return next({ status: 400, message: '"title" is required' });
+  return next();
+};
+
+const contentValidation = async (req, _res, next) => {
+  const { content } = req.body;
+  if (!content) return next({ status: 400, message: '"content" is required' });
+  return next();
+};
+
+const categoryIdsValidation = async (req, _res, next) => {
+  const { categoryIds } = req.body;
+  if (!categoryIds) return next({ status: 400, message: '"categoryIds" is required' });
+  return next();
+};
+
+const checkIfCategoriesExist = async (req, _res, next) => {
+  const { categoryIds } = req.body;
+    const promises = categoryIds.map((id) => Category.findOne({ where: { id } }));
+    return Promise.all(promises)
+    .then((arrayOfResponses) => (
+      arrayOfResponses.includes(null)
+      ? next({ status: 400, message: '"categoryIds" not found' }) : next()));
+};
+
 module.exports = {
   displayNameValidation,
   emailValidation,
@@ -86,4 +113,8 @@ module.exports = {
   checkLoginData,
   validateJWT,
   nameValidation,
+  titleValidation,
+  contentValidation,
+  categoryIdsValidation,
+  checkIfCategoriesExist,
 };
