@@ -14,7 +14,7 @@ postsRouter.post('/',
 
 postsRouter.get('/:id', auth.validateJWT, controller.getPostById);
   
-postsRouter.get('/', auth.validateJWT, auth.checkIfUserHasAuth, controller.getAllPosts);
+postsRouter.get('/', auth.validateJWT, controller.getAllPosts);
 
 postsRouter.put('/:id',
   auth.validateJWT,
