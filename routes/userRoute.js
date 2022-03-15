@@ -14,4 +14,6 @@ userRouter.post('/',
 userRouter.get('/:id', auth.validateJWT, controller.getById);
 userRouter.get('/', auth.validateJWT, controller.getAll);
 
+userRouter.delete('/me', auth.validateJWT, controller.deleteUser);
+
 module.exports = userRouter;

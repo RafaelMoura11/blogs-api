@@ -26,14 +26,21 @@ const getAll = async (_req, res) => {
 
 const getById = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
   const user = await User.findOne({ where: { id } });
   if (!user) return next({ status: 404, message: 'User does not exist' });
   return res.status(200).json(user);
+};
+
+const deleteUser = async (req, res) => {
+  const { data: { email } } = req.user;
+  const { dataValues: { id } } = await service.findUserByEmail(email);
+  await service.deleteUser(id);
+  return res.status(204).end();
 };
 
 module.exports = {
   registerUser,
   getAll,
   getById,
+  deleteUser,
 };
