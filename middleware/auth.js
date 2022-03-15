@@ -80,6 +80,7 @@ const checkIfUserHasAuth = async (req, _res, next) => {
   const { data: { email } } = req.user;
   const { dataValues: { id: userIdInTheRequest } } = await userService.findUserByEmail(email);
   const [post] = await postService.getPostById(id);
+  if (!post) return next({ status: 404, message: 'Post does not exist' });
   if (post.dataValues.userId !== userIdInTheRequest) {
     return next({ status: 401, message: 'Unauthorized user' });
   }

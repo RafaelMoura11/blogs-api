@@ -23,5 +23,7 @@ postsRouter.put('/:id',
   auth.titleValidation,
   auth.contentValidation,
   controller.updatePost);
+
+postsRouter.delete('/:id', auth.validateJWT, auth.checkIfUserHasAuth, controller.deletePost);
   
 module.exports = postsRouter;
