@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const service = require('../services/user');
+const { User } = require('../models');
 
 const secret = 'meusecretdetoken';
 
@@ -18,6 +19,12 @@ const registerUser = async (req, res) => {
   return res.status(201).json({ token });
 };
 
+const getAll = async (_req, res) => {
+  const allUsers = await User.findAll();
+  return res.status(200).json(allUsers);
+};
+
 module.exports = {
   registerUser,
+  getAll,
 };
