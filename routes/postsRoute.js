@@ -10,6 +10,8 @@ postsRouter.post('/',
   auth.contentValidation,
   auth.categoryIdsValidation,
   auth.checkIfCategoriesExist,
-  controller.postPost);
+  controller.createPost);
+
+postsRouter.get('/', auth.validateJWT, controller.getAllPosts);
 
 module.exports = postsRouter;

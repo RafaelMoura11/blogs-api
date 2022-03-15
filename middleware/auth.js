@@ -65,7 +65,8 @@ const validateJWT = async (req, _res, next) => {
   const token = req.headers.authorization;
   if (!token) return next({ status: 401, message: 'Token not found' });
   try {
-    jwt.verify(token, segredo);
+    const userEmail = jwt.verify(token, segredo);
+    req.user = userEmail;
     return next();
   } catch (e) {
     return next({ status: 401, message: 'Expired or invalid token' });

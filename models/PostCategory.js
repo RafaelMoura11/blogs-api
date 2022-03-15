@@ -3,19 +3,19 @@ const optionalParams = {
   tableName: 'PostsCategories',
 };
 
-const categoryObject = (UserBook) => (
+const categoryObject = (PostCategory) => (
   {
     as: 'categories',
-    through: UserBook,
+    through: PostCategory,
     foreignKey: 'categoryId',
     otherKey: 'postId',
   }
 );
 
-const postObject = (UserBook) => (
+const postObject = (PostCategory) => (
   {
-    as: 'blogposts',
-    through: UserBook,
+    as: 'categories',
+    through: PostCategory,
     foreignKey: 'postId',
     otherKey: 'categoryId',
   }

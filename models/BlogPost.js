@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.INTEGER, primaryKey: true },
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    userId: { type: DataTypes.INTEGER, foreignKey: true },
     published: { type: sequelize.fn('now') },
     updated: { type: sequelize.fn('now') },
   }, optionalParams);
@@ -18,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   BlogPost.associate = (models) => {
-    BlogPost.belongsToMany(models.User, { foreignKey: 'userId', through: BlogPost, as: 'users' });
+    BlogPost.belongsTo(models.User, { foreignKey: 'userId', through: BlogPost, as: 'user' });
   };
 
   return BlogPost;
