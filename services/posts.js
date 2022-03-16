@@ -48,8 +48,8 @@ const getAllPosts = async () => {
 
     { model: Category,
       as: 'categories',
-    through: PostCategory,
-    attributes: { exclude: ['PostCategory'] } },
+      through: { attributes: [] },
+      attributes: { exclude: ['PostCategory'] } },
   ],
     attributes: { exclude: ['UserId'] },
   });
@@ -64,8 +64,8 @@ const getPostById = async (id) => {
 
     { model: Category,
       as: 'categories',
-    through: PostCategory,
-    attributes: { exclude: ['PostCategory'] } },
+      through: { attributes: [] },
+      attributes: { exclude: ['PostCategory'] } },
   ],
     attributes: { exclude: ['UserId'] },
   });
@@ -81,8 +81,8 @@ const getPostBySearch = async (q) => {
 
     { model: Category,
       as: 'categories',
-    through: PostCategory,
-    attributes: { exclude: ['PostCategory'] } },
+      through: { attributes: [] },
+      attributes: { exclude: ['PostCategory'] } },
   ],
     attributes: { exclude: ['UserId'] },
   });
