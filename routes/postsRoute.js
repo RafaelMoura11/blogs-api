@@ -12,6 +12,8 @@ postsRouter.post('/',
   auth.checkIfCategoriesExist,
   controller.createPost);
 
+postsRouter.get('/search', auth.validateJWT, controller.getPostBySearch);
+
 postsRouter.get('/:id', auth.validateJWT, controller.getPostById);
   
 postsRouter.get('/', auth.validateJWT, controller.getAllPosts);
