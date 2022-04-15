@@ -9,7 +9,7 @@ const jwtConfig = {
 };
 
 const registerUser = async (req, res) => {
-  const { displayName, email, password, image } = req.body;
+  const { displayName, email, password, image = 'noimage' } = req.body;
 
   await service.registerUser(displayName, email, password, image);
 
