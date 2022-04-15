@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const service = require('../services/user');
 const { User } = require('../models');
-
-const secret = 'meusecretdetoken';
+require('dotenv').config();
 
 const jwtConfig = {
   expiresIn: '7d',
@@ -14,7 +13,7 @@ const registerUser = async (req, res) => {
 
   await service.registerUser(displayName, email, password, image);
 
-  const token = jwt.sign({ data: { email } }, secret, jwtConfig);
+  const token = jwt.sign({ data: { email } }, process.env.SECRET, jwtConfig);
 
   return res.status(201).json({ token });
 };

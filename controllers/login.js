@@ -1,7 +1,6 @@
 // const service = require('../services/login');
 const jwt = require('jsonwebtoken');
-
-const secret = 'meusecretdetoken';
+require('dotenv').config();
 
 const jwtConfig = {
   expiresIn: '7d',
@@ -11,7 +10,7 @@ const jwtConfig = {
 const login = async (req, res) => {
   const { email } = req.body;
 
-  const token = jwt.sign({ data: { email } }, secret, jwtConfig);
+  const token = jwt.sign({ data: { email } }, process.env.SECRET, jwtConfig);
 
   res.status(200).json({ token });
 };
